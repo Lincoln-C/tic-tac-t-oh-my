@@ -26,8 +26,38 @@ void print_board() {
 	printf("\n");
 }
 
+// Return 1 if taken
+// Return 0 if free
+int check_spot_taken(int spot) {
+	// Get row and column from spot
+	int row = (int) (spot - 1) / 3;
+	int col = (int) (spot - 1) % 3;
+
+	if (board[row][col] == PLAYER_1 || board[row][col] == PLAYER_2
+		|| spot < 0 || spot > 9) {
+		// Spot taken
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
 void user_move() {
-	
+	printf("Choose a spot, any spot... (with a number): ");
+
+	int move_place = 0;
+	scanf("%i", &move_place);
+
+	while (check_spot_taken(move_place) != 0) {
+		// Bad spot
+		if (move_place < 0 || move_place > 9) {
+			printf("That is not a valid spot. Try again: ");
+		} else {
+			printf("Sorry, that spot is taken. Choose another: ");
+		}
+
+		scanf("%i", &move_place);
+	}
 }
 
 // Checks to see if there is a current game winner
@@ -46,13 +76,15 @@ int main() {
 	set_up_board();
 	print_board();
 
-	while (check_winner() == 0) {
+	/*while (check_winner() == 0) {
 		// Get user input while game not won
-		printf("Choose a spot, any spot... (with a number): ");
-		user_move();
-	}
+		
+	}*/
+
+	user_move();
+	printf("Current board:\n");
+	print_board();
 	
-	printf("\n");
 	if (check_winner() == 1) {
 		printf("You got destroyed by the computer!");
 	} else if (check_winner() == -1) {
