@@ -2,8 +2,8 @@
 
 // Board
 char board[3][3];
-const char PLAYER_1 = 'X';
-const char PLAYER_2 = 'O';
+const char COMPUTER = 'X';
+const char PLAYER = 'O';
 
 void set_up_board() {
 	char place = '1';
@@ -33,8 +33,8 @@ int check_spot_taken(int spot) {
 	int row = (int) (spot - 1) / 3;
 	int col = (int) (spot - 1) % 3;
 
-	if (board[row][col] == PLAYER_1 || board[row][col] == PLAYER_2
-		|| spot < 0 || spot > 9) {
+	if (board[row][col] == COMPUTER || board[row][col] == PLAYER
+		|| spot < 1 || spot > 9) {
 		// Spot taken
 		return 1;
 	} else {
@@ -50,7 +50,7 @@ void user_move() {
 
 	while (check_spot_taken(move_place) != 0) {
 		// Bad spot
-		if (move_place < 0 || move_place > 9) {
+		if (move_place < 1 || move_place > 9) {
 			printf("That is not a valid spot. Try again: ");
 		} else {
 			printf("Sorry, that spot is taken. Choose another: ");
@@ -58,6 +58,10 @@ void user_move() {
 
 		scanf("%i", &move_place);
 	}
+
+	int row = (int) (move_place - 1) / 3;
+	int col = (int) (move_place - 1) % 3;
+	board[row][col] = PLAYER;
 }
 
 // Checks to see if there is a current game winner
@@ -71,6 +75,7 @@ int check_winner() {
 
 int main() {
 	printf("Welcome to tic tac toe!\n");
+	printf("You are \"O\".\n");
 	printf("The computer will go first, because I am evil >:)\n\n");
 	
 	set_up_board();
